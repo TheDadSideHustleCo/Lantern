@@ -248,6 +248,10 @@ body {
   overflow-y: auto; -webkit-overflow-scrolling: touch; overscroll-behavior: contain;
   backdrop-filter: blur(5px);
 }
+#ob-link-note { background:#eef4ef; border:2px solid var(--sage); border-radius:12px; padding:14px 16px; margin:0 0 22px; font-size:1rem; line-height:1.5; text-align:center; }
+#ob-link-note strong { display:block; font-size:1.05rem; margin-bottom:4px; color:var(--sage-dark); }
+#ob-link-note a { display:inline-block; margin-top:6px; font-weight:700; font-size:1.05rem; color:var(--sage-dark); word-break:break-all; }
+#ob-link-note .oln-pc { display:block; margin-top:8px; font-size:0.88rem; color:var(--text-muted); }
 .onboarding-box {
   margin: auto 0;
   background: var(--warm-white);
@@ -1175,6 +1179,13 @@ textarea { resize: vertical; min-height: 72px; overflow: hidden; }
 ══════════════════════════════════════════════════ -->
 <div id="onboarding-overlay">
   <div class="onboarding-box">
+    <!-- Shown when Lantern can't run here (e.g. iPhone file preview); hidden automatically when opened from the web link -->
+    <div id="ob-link-note">
+      <strong>📲 On an iPhone, iPad or Android phone?</strong>
+      Open Lantern from your link instead:<br>
+      <a href="https://thedadsidehustleco.github.io/Lantern/">thedadsidehustleco.github.io/Lantern</a>
+      <span class="oln-pc">On a computer, you can keep using this file, or use the link to get automatic updates.</span>
+    </div>
 
     <div class="onboarding-brand">
       <span class="ob-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 36 52" width="56" height="56"><path d="M14 8 Q14 2 18 2 Q22 2 22 8" stroke="#c4a46b" stroke-width="2.5" fill="none" stroke-linecap="round"/><path d="M6 12 L30 12 L27 17 L9 17 Z" fill="#c4a46b"/><rect x="8" y="17" width="20" height="24" fill="rgba(255,220,120,0.25)" stroke="#c4a46b" stroke-width="1.5" rx="1"/><line x1="15" y1="17" x2="15" y2="41" stroke="#c4a46b" stroke-width="1.2" opacity="0.7"/><line x1="21" y1="17" x2="21" y2="41" stroke="#c4a46b" stroke-width="1.2" opacity="0.7"/><ellipse cx="18" cy="32" rx="4" ry="6" fill="rgba(255,180,60,0.5)"/><ellipse cx="18" cy="29" rx="2.5" ry="3.5" fill="rgba(255,140,20,0.75)"/><ellipse cx="18" cy="27" rx="1.2" ry="2" fill="rgba(255,255,100,0.9)"/><path d="M8 41 L28 41 L25 46 L11 46 Z" fill="#c4a46b"/><polygon points="16,46 20,46 18,51" fill="#c4a46b"/></svg></span>
@@ -2259,7 +2270,7 @@ textarea { resize: vertical; min-height: 72px; overflow: hidden; }
 <div id="toast"></div>
 
 <script>
-const APP_VERSION = '1.0.2';
+const APP_VERSION = '1.0.3';
 // Local calendar date (YYYY-MM-DD) on the user's device — not UTC
 function localDateStr(d) { d = d || new Date(); const p = n => String(n).padStart(2, '0'); return d.getFullYear() + '-' + p(d.getMonth() + 1) + '-' + p(d.getDate()); }
 
@@ -3944,6 +3955,7 @@ document.addEventListener('DOMContentLoaded', () => {
 const UPDATE_CHECK_URL = 'https://thedadsidehustleco.github.io/Lantern/';
 const IS_WEB = /^https?:$/.test(location.protocol);
 try { document.getElementById('app-version-label').textContent = APP_VERSION; } catch (e) {}
+try { if (IS_WEB) document.getElementById('ob-link-note').style.display = 'none'; } catch (e) {}
 if (IS_WEB && 'serviceWorker' in navigator) {
   window.addEventListener('load', () => { navigator.serviceWorker.register('./sw.js').catch(() => {}); });
 }
